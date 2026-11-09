@@ -1,0 +1,60 @@
+# Japan JLPT Level Check
+
+> Free, unofficial checker of which Japanese visa / status language rules a JLPT level (N1–N5, optional total score), a BJT score or Japanese schooling meets. N4 (or JFT-Basic) = Specified Skilled Worker (i); N2 = 10 HSP points and the Business Manager B2 rule (since 2025-10-16, applicant or a full-time employee); N1 / BJT 480+ = 15 HSP points and Designated Activities 46 (with a Japanese degree); B1 (N3 104+/180, N2, N1 on JLPT's official CEFR reference) is a factor for permanent-residence applications from 2027-04-01 and required for SSW (ii) food service / fishery from 2027-04-01. Rules as of 2026-11-09. Educational, not advice; not affiliated with the Immigration Services Agency of Japan or the JLPT organisers.
+
+Site: https://japan-jlpt-check.vercel.app
+
+## Key facts (official sources below)
+- JLPT CEFR reference (score reports from Dec 2025, passes only): N1 142+ C1, 100–141 B2; N2 112+ B2, 90–111 B1; N3 104+ B1, 95–103 A2; N4 A2; N5 A1. Pass marks /180: N1 100, N2 90, N3 95, N4 90, N5 80.
+- HSP points: N1 / BJT 480+ / Japanese major at a foreign university = 15; N2 / BJT 400+ = 10 (not on top of the Japanese-degree 10).
+- Designated Activities 46: Japanese university / graduate-school degree + N1 or BJT 480+.
+- Business Manager (from 2025-10-16): applicant or full-time employee with B2: N2+, BJT 400+, 20+ years mid/long-term residence, Japanese higher-ed graduate (専門学校 counts), or Japanese compulsory + high school. Existing holders: leeway to 2028-10-16.
+- SSW (i): JFT-Basic A2.2 or N4+; TITP (ii) completers exempt. Care also needs the Care Japanese Language Evaluation Test (waived only by TITP (ii) care).
+- SSW (ii) food service / fishery: B1 from 2027-04-01 (proof method to be announced).
+- 育成就労 (from 2027-04-01): A1 test (e.g. N5) or A1 course before work; A2 (N4 level) to move to SSW (i).
+- Permanent residence (guideline revised 2026-10-01): B1 considered for applications from 2027-04-01; not for HSP holders/families or 6+ years of Japanese schooling; no test named.
+- Benchmarks (JLPT): Japanese-language school N5+; universities N2+; Engineer/Humanities N2+ when the job uses Japanese; N1 for national medical exams (foreign-licensed doctors, nurses, pharmacists etc.) and assistant-nurse exams; N1/N2 waives junior-high equivalency Japanese; EPA PH ~N5, ID ~N4, VN N3.
+
+## API (free, no key, CORS open)
+
+### GET
+GET https://japan-jlpt-check.vercel.app/api/check?level=n2&score=115
+→ verdict "b2_plus", cefr.level "B2", hspPoints 10, items[] (business_manager "met", designated_activities_46 "not_met", ssw1 "met", permanent_residence …), nextLevelUnlocks, sources, disclaimer
+
+### POST
+POST https://japan-jlpt-check.vercel.app/api/check
+{"level":"n3","score":104,"applyDate":"2027-04-01"}
+→ cefr.level "B1", permanent_residence "considered_met"
+
+Parameters: level (n1–n5 | none; aliases N2, 2, JLPT N2, 日本語能力試験N2), score (0–180), bjtScore, japaneseDegree, japaneseHigherEd, japaneseMajorAbroad, japaneseHighSchool, japaneseSchooling6y, yearsInJapan, jftBasic, titp2, titp2Care, careJapaneseTest, hsp, applyDate, today.
+
+Item statuses: met | not_met | exempt | points | no_points | considered_met | considered_unclear | considered_not_met | not_considered | not_in_force_yet | not_required | check_rules.
+
+Bad input → 400 {error, docs, example, disclaimer}.
+
+### Other endpoints
+- GET https://japan-jlpt-check.vercel.app/api/rules
+- https://japan-jlpt-check.vercel.app/openapi.json
+- https://japan-jlpt-check.vercel.app/.well-known/ai-plugin.json
+- MCP: tool japan_jlpt_level_check on https://free-agent-tools.vercel.app/mcp
+
+## Official sources
+- https://www.jlpt.jp/e/about/merit.html
+- https://www.jlpt.jp/about/cefr_reference.html
+- https://www.moj.go.jp/isa/applications/resources/newimmiact_3_evaluate_index.html
+- https://www.moj.go.jp/isa/applications/status/designatedactivities11.html
+- https://www.moj.go.jp/isa/applications/resources/10_00237.html
+- https://www.moj.go.jp/isa/policies/ssw/foodservice.html
+- https://www.moj.go.jp/isa/policies/ssw/fishery.html
+- https://www.moj.go.jp/isa/policies/ssw/nursingcare.html
+- https://www.moj.go.jp/isa/03_00195.html
+- https://www.moj.go.jp/isa/10_00279.html
+
+## Other free tools
+- https://japan-hsp-points.vercel.app — Japan HSP Points Calculator
+- https://japan-pr-check.vercel.app — Japan PR Guideline Check
+- https://japan-visa-renewal.vercel.app — Japan Visa Renewal Check
+- https://japan-parttime-check.vercel.app — Japan Part-time Work Check
+- https://japan-job-loss.vercel.app — Japan Job Loss Check
+- https://japan-visa-fee.vercel.app — Japan Visa Fee Calculator
+- https://free-agent-tools.vercel.app — Free Agent Tools MCP

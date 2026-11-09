@@ -1,0 +1,31 @@
+{
+  "name": "japan-jlpt-check",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Free checker for when to renew a visa (period of stay) or residence card in Japan: 3-month window, last day, 2-month special period, 2026-10-01 fees, permanent-resident card renewal and the June 2026 card rules. Keyless JSON API + MCP.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "node --import tsx --test lib/jlpt.test.ts lib/api.test.ts lib/share.test.ts lib/mobile.test.ts"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "next": "^16.3.5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "^16.3.5",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}
