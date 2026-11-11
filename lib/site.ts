@@ -10,6 +10,7 @@ export const HONESTY =
   "Rules as of 2026-11-09 from JLPT's official Advantages and CEFR reference pages and ISA's pages on HSP points, Designated Activities 46, the 2025-10-16 Business Manager revision, Specified Skilled Worker fields, 育成就労 and the 2026-10-01 permanent-residence guideline. It works from what you type; it cannot see your certificate.";
 
 export const SIBLING_TOOLS = [
+  { href: "https://japan-graduate-visa.vercel.app", label: "Japan Graduate Visa Check" },
   { href: "https://japan-visa-renewal.vercel.app", label: "Japan Visa Renewal Check" },
   { href: "https://japan-job-loss.vercel.app", label: "Japan Job Loss Check" },
   { href: "https://japan-medical-cost-cap.vercel.app", label: "Japan High-Cost Medical Expense Check" },

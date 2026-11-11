@@ -51,6 +51,7 @@ Bad input → 400 {error, docs, example, disclaimer}.
 - https://www.moj.go.jp/isa/10_00279.html
 
 ## Other free tools
+- https://japan-graduate-visa.vercel.app — Japan Graduate Visa Check
 - https://japan-hsp-points.vercel.app — Japan HSP Points Calculator
 - https://japan-pr-check.vercel.app — Japan PR Guideline Check
 - https://japan-visa-renewal.vercel.app — Japan Visa Renewal Check
