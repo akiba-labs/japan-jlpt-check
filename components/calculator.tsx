@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import { CardDisclaimer } from "@/components/card-disclaimer";
 import { ShareBar } from "@/components/share-bar";
 import type { Level } from "@/lib/jlpt";
+import { isGithubPages, pagesSiteUrl } from "@/lib/hosting";
 import { EXAMPLE_SHARED, FLAGS, PUBLIC_URL, resultPath, safeCheck, type Shared } from "@/lib/share";
 import { STATUS_LABEL, STATUS_STYLE, VERDICT_LABEL, VERDICT_STYLE } from "@/lib/verdict";
 
@@ -51,7 +52,7 @@ export function Calculator({ initial }: { initial?: Shared }) {
     today,
   };
   const r = safeCheck(shared);
-  const shareUrl = `${PUBLIC_URL}${resultPath(shared)}`;
+  const shareUrl = isGithubPages ? `${pagesSiteUrl(PUBLIC_URL)}/` : `${PUBLIC_URL}${resultPath(shared)}`;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[0.9fr_1.3fr]">
