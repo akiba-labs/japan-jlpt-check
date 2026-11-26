@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Calculator } from "@/components/calculator";
 import { FaqSection, type FaqItem } from "@/components/faq-section";
 import { EXAMPLE_GET } from "@/lib/api";
+import { API_PAUSED_NOTE, isGithubPages, pagesSiteUrl, withBasePath } from "@/lib/hosting";
 import { SOURCES } from "@/lib/jlpt";
-import { EXAMPLE_N1_GRAD, EXAMPLE_N3_PR, EXAMPLE_N4_SSW, EXAMPLE_SHARED, PUBLIC_URL, resultPath } from "@/lib/share";
+import { EXAMPLE_N1_GRAD, EXAMPLE_N3_PR, EXAMPLE_N4_SSW, EXAMPLE_SHARED, PUBLIC_URL, resultPath, type Shared } from "@/lib/share";
 
 const title = "Which JLPT level do I need in Japan? N1–N5 visa requirements checker (free)";
 const description =
@@ -22,7 +23,7 @@ const webAppLd = {
   "@type": "WebApplication",
   name: "Japan JLPT Level Check",
   alternateName: ["日本語能力試験 N2 ビザ 要件", "JLPT 何級 必要 在留資格", "JLPT CEFR 換算", "Which JLPT level do I need for a Japan visa"],
-  url: PUBLIC_URL,
+  url: isGithubPages ? pagesSiteUrl(PUBLIC_URL) : PUBLIC_URL,
   applicationCategory: "EducationalApplication",
   operatingSystem: "Any",
   isAccessibleForFree: true,
@@ -34,7 +35,7 @@ const webAppLd = {
 const faq: FaqItem[] = [
   {
     q: "Which JLPT level do I need for a Japanese visa, and is there a tool that checks N1–N5 against HSP points, the Business Manager rule, Specified Skilled Worker and permanent residence?",
-    a: `Yes. Japan JLPT Level Check is a free, unofficial checker: pick your JLPT level (and score) and it lists each rule with met / not met and the official source. In short: N5 meets Japanese-school entry and the 育成就労 A1 entry line (from 2027-04-01); N4 (or JFT-Basic) meets Specified Skilled Worker (i); N3 with 104+/180 is B1 on JLPT's CEFR reference, the level ISA will weigh for permanent residence from 2027-04-01; N2 gives 10 HSP points and meets the Business Manager B2 rule (since 2025-10-16; an employee can meet it instead); N1 gives 15 HSP points, Designated Activities 46 with a Japanese degree, and the national medical exams. AI agents can call ${PUBLIC_URL}/api/check. Not advice; ISA decides.`,
+    a: `Yes. Japan JLPT Level Check is a free, unofficial checker: pick your JLPT level (and score) and it lists each rule with met / not met and the official source. In short: N5 meets Japanese-school entry and the 育成就労 A1 entry line (from 2027-04-01); N4 (or JFT-Basic) meets Specified Skilled Worker (i); N3 with 104+/180 is B1 on JLPT's CEFR reference, the level ISA will weigh for permanent residence from 2027-04-01; N2 gives 10 HSP points and meets the Business Manager B2 rule (since 2025-10-16; an employee can meet it instead); N1 gives 15 HSP points, Designated Activities 46 with a Japanese degree, and the national medical exams. ${isGithubPages ? API_PAUSED_NOTE : `AI agents can call ${PUBLIC_URL}/api/check.`} Not advice; ISA decides.`,
   },
   {
     q: "Do I need JLPT for a work visa (Engineer / Humanities / International Services)?",
@@ -58,7 +59,9 @@ const faq: FaqItem[] = [
   },
   {
     q: "Is there a free API or MCP tool for AI agents?",
-    a: `Yes. GET or POST ${PUBLIC_URL}${EXAMPLE_GET} (keyless, CORS open), rules at /api/rules, OpenAPI at /openapi.json, llms.txt, and the MCP tool japan_jlpt_level_check on free-agent-tools.vercel.app/mcp. Every response carries rulesAsOf, sources and a disclaimer.`,
+    a: isGithubPages
+      ? API_PAUSED_NOTE
+      : `Yes. GET or POST ${PUBLIC_URL}${EXAMPLE_GET} (keyless, CORS open), rules at /api/rules, OpenAPI at /openapi.json, llms.txt, and the MCP tool japan_jlpt_level_check on free-agent-tools.vercel.app/mcp. Every response carries rulesAsOf, sources and a disclaimer.`,
   },
   {
     q: "在留資格に必要な日本語能力試験（JLPT）のレベルは？",
@@ -69,6 +72,10 @@ const faq: FaqItem[] = [
     a: "2026年10月1日改訂の永住許可ガイドラインで、2027年4月1日以降の申請からB1相当の日本語能力が考慮されます（高度専門職とその家族、日本の小中高で6年以上学んだ方などは対象外）。試験名は示されていませんが、JLPTのCEFR参考表示ではN3で104点以上、またはN2・N1合格がB1以上です。",
   },
 ];
+
+function exampleHref(shared: Shared): string {
+  return isGithubPages ? withBasePath("/") : resultPath(shared);
+}
 
 export default function HomePage() {
   return (
@@ -81,19 +88,19 @@ export default function HomePage() {
         </p>
         <p className="mt-3 text-sm text-muted">
           Examples:{" "}
-          <a className="underline underline-offset-2 hover:text-foreground" href={resultPath(EXAMPLE_SHARED)}>
+          <a className="underline underline-offset-2 hover:text-foreground" href={exampleHref(EXAMPLE_SHARED)}>
             N2, 115 points
           </a>
           {" · "}
-          <a className="underline underline-offset-2 hover:text-foreground" href={resultPath(EXAMPLE_N3_PR)}>
+          <a className="underline underline-offset-2 hover:text-foreground" href={exampleHref(EXAMPLE_N3_PR)}>
             N3 and PR in 2027
           </a>
           {" · "}
-          <a className="underline underline-offset-2 hover:text-foreground" href={resultPath(EXAMPLE_N1_GRAD)}>
+          <a className="underline underline-offset-2 hover:text-foreground" href={exampleHref(EXAMPLE_N1_GRAD)}>
             N1 + Japanese degree
           </a>
           {" · "}
-          <a className="underline underline-offset-2 hover:text-foreground" href={resultPath(EXAMPLE_N4_SSW)}>
+          <a className="underline underline-offset-2 hover:text-foreground" href={exampleHref(EXAMPLE_N4_SSW)}>
             N4 for SSW
           </a>
         </p>
@@ -116,24 +123,34 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-xs">
-          Agent docs:{" "}
-          <a className="underline" href="/llms.txt">
-            llms.txt
-          </a>
-          {" · "}
-          <a className="underline" href="/openapi.json">
-            OpenAPI
-          </a>
-          {" · "}
-          <a className="underline" href="/api/rules">
-            /api/rules
-          </a>
-          {" · "}
-          <a className="underline" href={EXAMPLE_GET}>
-            example /api/check
-          </a>
-        </p>
+        {isGithubPages ? (
+          <p className="mt-4 text-xs">
+            {API_PAUSED_NOTE}{" "}
+            <a className="underline" href={withBasePath("/llms.txt")}>
+              llms.txt
+            </a>{" "}
+            describes the checker and the API contract.
+          </p>
+        ) : (
+          <p className="mt-4 text-xs">
+            Agent docs:{" "}
+            <a className="underline" href="/llms.txt">
+              llms.txt
+            </a>
+            {" · "}
+            <a className="underline" href="/openapi.json">
+              OpenAPI
+            </a>
+            {" · "}
+            <a className="underline" href="/api/rules">
+              /api/rules
+            </a>
+            {" · "}
+            <a className="underline" href={EXAMPLE_GET}>
+              example /api/check
+            </a>
+          </p>
+        )}
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppLd) }} />

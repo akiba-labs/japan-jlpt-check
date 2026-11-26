@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
 
+export const dynamic = "force-static";
+
 export const alt = "Japan JLPT Level Check: which JLPT level you need for Japanese visas and statuses";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
